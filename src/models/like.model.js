@@ -1,11 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { Video } from "./video.models";
 
 const likeSchema = new Schema(
   {
-    // either of "video", "comment" or "tweet" will be
-    // assigned others are null
-
     video: {
       type: Schema.Types.ObjectId,
       ref: "Video",
@@ -18,12 +14,11 @@ const likeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Tweet",
     },
-    video: {
+    likedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
   },
-
   { timestamps: true }
 );
 

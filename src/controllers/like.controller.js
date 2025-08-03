@@ -91,8 +91,9 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
   const existingLike = await Like.findOne({
     tweet: tweetId,
-    likedBy: req.user._id,
   });
+
+  console.log(existingLike);
 
   if (existingLike) {
     // Unlike

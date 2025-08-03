@@ -13,4 +13,4 @@ router.route("/stats").get(verifyJWT, getChannelStats);
 
 router.route("/videos").get(verifyJWT, getChannelVideos);
 
-export default router; 
+export default router;

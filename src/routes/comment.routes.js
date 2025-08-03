@@ -11,13 +11,13 @@ import { verifyJWT } from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 // Public routes
-router.route("/:videoId").get(getVideoComments);
+router.route("/getVideoComments/:videoId").get(getVideoComments);
 
 // Secured routes
-router.route("/:videoId").post(verifyJWT, addComment);
+router.route("/addVideoComment/:videoId").post(verifyJWT, addComment);
 
-router.route("/:commentId").patch(verifyJWT, updateComment);
+router.route("/updateComment/:commentID").patch(verifyJWT, updateComment);
 
-router.route("/:commentId").delete(verifyJWT, deleteComment);
+router.route("/deleteComment/:commentID").delete(verifyJWT, deleteComment);
 
-export default router; 
+export default router;

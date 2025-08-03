@@ -10,10 +10,10 @@ import { verifyJWT } from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 // Secured routes
-router.route("/:channelId").post(verifyJWT, toggleSubscription);
+router.route("/toggleSubscribe/:channelId").post(verifyJWT, toggleSubscription);
 
 router.route("/c/:channelId").get(verifyJWT, getUserChannelSubscribers);
 
 router.route("/u/:subscriberId").get(verifyJWT, getSubscribedChannels);
 
-export default router; 
+export default router;

@@ -14,10 +14,10 @@ import { verifyJWT } from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 // Public routes
-router.route("/").get(getAllVideos);
+router.route("/getAll").get(getAllVideos);
 
 // Secured routes
-router.route("/").post(
+router.route("/upload-video").post(
   verifyJWT,
   upload.fields([
     {
@@ -34,14 +34,12 @@ router.route("/").post(
 
 router.route("/:videoId").get(verifyJWT, getVideoById);
 
-router.route("/:videoId").patch(
-  verifyJWT,
-  upload.single("thumbnail"),
-  updateVideo
-);
+router
+  .route("/updateVideo/:videoId")
+  .patch(verifyJWT, upload.single("thumbnail"), updateVideo);
 
-router.route("/:videoId").delete(verifyJWT, deleteVideo);
+router.route("/delete/:videoId").delete(verifyJWT, deleteVideo);
 
 router.route("/:videoId/publish").patch(verifyJWT, togglePublishStatus);
 
-export default router; 
+export default router;

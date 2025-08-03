@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/user.models.js";
+import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 import {
   uploadOnCloudinary,
   deleteFromCloudinary,
@@ -141,6 +142,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // validate password
 
   const isPasswordValid = await user.isPasswordCorrect(password);
+  console.log(isPasswordValid);
 
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid credentials");
@@ -296,9 +298,17 @@ const updateAccoutDetails = asyncHandler(async (req, res) => {
     { new: true }
   ).select("-password -refreshToken");
 
+  const { fullname: updatedFullname, email: updatedEmail } = user;
+
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "Accound detail updated successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { fullname, email },
+        "Accound detail updated successfully"
+      )
+    );
 });
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
@@ -392,12 +402,15 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         channelsSubscribedToCount: {
           $size: "$subscriberedTo",
         },
+        // isSubscribed: {
+        //   $cond: {
+        //     if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+        //     then: true,
+        //     else: false,
+        //   },
+        // },
         isSubscribed: {
-          $cond: {
-            if: { $in: [req.user?._id, "subscribers.subscriber"] },
-            then: true,
-            else: false,
-          },
+          $in: [req.user?._id, "$subscribers.subscriber"],
         },
       },
     },
